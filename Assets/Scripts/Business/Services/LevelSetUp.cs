@@ -45,7 +45,7 @@ namespace Assets.Scripts.Business.Services
             var objects = level.GetRootGameObjects();
             GameObject structure = null;
             GameObject player = null; // _instantiateFunction(Resources.Load<GameObject>("Prefabs/Actors/Player"));
-            SpawnManager spawnManager = null;
+            //SpawnManager spawnManager = null;
             Volume globalVolume = null;
 
             //StaminaBar staminaBar = null;
@@ -73,7 +73,7 @@ namespace Assets.Scripts.Business.Services
             }
 
             var actorContoller = player.GetComponent<ActorController>();
-            //actorContoller.Init("Data/ActorsData/PlayerData", globalVolume, staminaBar);
+            actorContoller.Init();//"Data/ActorsData/PlayerData", globalVolume, staminaBar);
             //actorContoller.SetVolume(_globalVolume);
 
             //player.GetComponent<>().Menu = escapeMenu.gameObject;
@@ -85,11 +85,11 @@ namespace Assets.Scripts.Business.Services
             escapeMenu.gameObject.SetActive(false);
 
             if (structure == null) Debug.LogError("Null Structure");
-            for (int i = 0; i < structure.transform.childCount; i++)
-            {
-                if (structure.transform.GetChild(i).gameObject.layer == Layers.Spawners)
-                    spawnManager = structure.transform.GetChild(i).GetComponent<SpawnManager>();
-                else structure.transform.GetChild(i).gameObject.SetActive(false);
+            //for (int i = 0; i < structure.transform.childCount; i++)
+            //{
+            //    if (structure.transform.GetChild(i).gameObject.layer == Layers.Spawners)
+            //        spawnManager = structure.transform.GetChild(i).GetComponent<SpawnManager>();
+                //else structure.transform.GetChild(i).gameObject.SetActive(false);
 
                 //var doors = structure.transform.GetChild(i).GetComponentsInChildren<Door>();
                 //for (int j = 0; j < doors.Length; j++)
@@ -114,7 +114,7 @@ namespace Assets.Scripts.Business.Services
                 //            _onDoorEnterAction(currentRoom, targetRoom, actor, door, onFaded);
                 //        });
                 //}
-            }
+            //}
             //player.GetComponent<ActorController>().OnDeath = () =>
             //{
             //    _playerDeathHandler(spawnManager, player);
