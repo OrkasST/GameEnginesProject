@@ -7,6 +7,7 @@ using UnityEngine;
 namespace Assets.Scripts.Objects.Actors
 {
     [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Animator))]
     public class ActorController : MonoBehaviour
     {
         public ActorStateMachine StateMachine { get; private set; } = new();
@@ -40,6 +41,8 @@ namespace Assets.Scripts.Objects.Actors
 
         public InteractibleObject Interactible { get; private set; }
 
+        public Animator ActorAnimator { get; private set; }
+
         public void Init(Vector3 position)
         {
             Debug.Log(gameObject.name + " Was Initialized");
@@ -64,6 +67,7 @@ namespace Assets.Scripts.Objects.Actors
             transform.GetChild(0).gameObject.GetComponent<AttackColliderLogic>().Init(OnAttack);
 
             StateMachine.name = gameObject.name;
+            ActorAnimator = GetComponent<Animator>();
         }
 
         private void Update()
@@ -100,6 +104,8 @@ namespace Assets.Scripts.Objects.Actors
             if (RB.linearVelocity.y <= -0.1f)
             {
                 StateMachine.RegisterStateChange(ActorState.Falling);
+                ActorAnimator.SetBool("IsJumping", false);
+                ActorAnimator.SetBool("IsFalling", true);
             }
         }
 
@@ -114,6 +120,7 @@ namespace Assets.Scripts.Objects.Actors
             if (collision.gameObject.layer == Layers.Ground && StateMachine.CurrentState == ActorState.Falling)
             {
                 StateMachine.RegisterStateChange(ActorState.Landing);
+                ActorAnimator.SetBool("IsFalling", false);
                 StateMachine.RegisterStateChange(ActorState.Standing);
             }
         }

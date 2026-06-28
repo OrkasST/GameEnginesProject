@@ -13,17 +13,20 @@ namespace Assets.Scripts.Objects.Actors
     {
         public static void Move(ActorController actor)
         {
+            actor.ActorAnimator.SetBool("IsRunning", true);
             actor.RB.linearVelocity = new Vector2 ((int)actor.StateMachine.CurrentDirection * actor.Speed, actor.RB.linearVelocity.y);
         }
 
         public static void Stop(ActorController actor)
         {
+            actor.ActorAnimator.SetBool("IsRunning", false);
             actor.RB.linearVelocity = Vector2.zero;
         }
 
         public static void Jump(ActorController actor)
         {
             actor.StateMachine.RegisterStateChange(ActorState.Accelerating);
+            actor.ActorAnimator.SetBool("IsJumping", true);
 
             int sleepTime = (int)(Time.fixedDeltaTime * 1000);
             actor.RB.linearVelocity = new Vector2(actor.RB.linearVelocity.x, actor.JumpForce);
@@ -41,13 +44,17 @@ namespace Assets.Scripts.Objects.Actors
             actor.LastAttackTime = Time.time;
             Stop(actor);
             actor.StateMachine.RegisterStateChange(ActorState.Attacking);
+            actor.ActorAnimator.SetBool("IsAttacking", true);
             GameObject attackCollider = actor.gameObject.transform.GetChild(0).gameObject;
             actor.StartCoroutine(AttackMovement(
                 (int)actor.StateMachine.CurrentDirection,
                 actor.AttackInitialPoint, actor.TicksToStart,
                 actor.AttackMovementVectors, actor.AttackMovementTicks,
                 actor.AttackSpeed, attackCollider,
-                () => { actor.StateMachine.RegisterStateChange(ActorState.FinishedAttacking); }
+                () => {
+                    actor.StateMachine.RegisterStateChange(ActorState.FinishedAttacking);
+                    actor.ActorAnimator.SetBool("IsAttacking", false);
+                }
                 ));
         }
         private static IEnumerator AttackMovement(
@@ -109,18 +116,28 @@ namespace Assets.Scripts.Objects.Actors
             }
         }
 
-        public static void InteractWithObject(ActorController actor)
+        public static async void InteractWithObject(ActorController actor)
         {
+            if (actor.ActorAnimator.GetBool("IsInteracting")) return;
             if (actor.Interactible == null)
             {
                 actor.StateMachine.RegisterStateChange(ActorState.FinishedInteracting);
                 return;
             }
+            actor.ActorAnimator.SetBool("IsInteracting", true);
+            await Task.Delay(600);  
             var interatible = actor.Interactible;
+
+            Debug.Log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Debug.Log("interatible: " + interatible);
+
             actor.ActorInventory.StoreItem(interatible.ObjectID);
+            Debug.Log("actor.ActorInventory: " + actor.ActorInventory);
+
             actor.ResetInteractible();
             interatible.OnBeingPicked();
             actor.StateMachine.RegisterStateChange(ActorState.FinishedInteracting);
+            actor.ActorAnimator.SetBool("IsInteracting", false);
 
             Debug.Log("Storage:");
             Debug.Log(actor.ActorInventory.Storage[0]);
