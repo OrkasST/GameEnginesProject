@@ -14,8 +14,8 @@ namespace Assets.Scripts.Objects.Actors
         public Inventory ActorInventory { get; private set; } = new();
 
         public Rigidbody2D RB { get; private set; }
-        public float Speed { get; private set; }
-        public float JumpForce { get; private set; }
+        public float Speed = 7f;
+        public float JumpForce = 10f;
 
         #region AttackData
         public Vector2 AttackInitialPoint { get; private set; }
@@ -24,12 +24,12 @@ namespace Assets.Scripts.Objects.Actors
         public int[] AttackMovementTicks { get; private set; }
         public float[] AttackSpeed { get; private set; }
         public float LastAttackTime = 0;
-        public float AttackInterval { get; private set; }
+        public float AttackInterval = 3f;
         #endregion
 
-        public float MaxHp { get; private set; }
+        public float MaxHp = 100;
         public float CurrentDamage { get; private set; }
-        public float DealingDamage { get; private set; }
+        public float DealingDamage = 10;
 
 
         private bool wasInitialised = false;
@@ -50,19 +50,19 @@ namespace Assets.Scripts.Objects.Actors
             SpawnPosition = position;
 
             RB = GetComponent<Rigidbody2D>();
-            Speed = 7f;
-            JumpForce = 10f;
+            //Speed = 7f;
+            //JumpForce = 10f;
 
             AttackInitialPoint = new Vector2(0.93f, 0.92f);
             TicksToStart = 10;
             AttackMovementVectors = new Vector2[] { new Vector2(0, -1f), new Vector2(1f, 1f) };
             AttackMovementTicks = new int[] { 10, 5 };
             AttackSpeed = new float[] { 12f, 16f };
-            AttackInterval = 3f;
+            //AttackInterval = 3f;
 
-            MaxHp = 100;
+            //MaxHp = 100;
             CurrentDamage = 0;
-            DealingDamage = 10;
+            //DealingDamage = 10;
 
             transform.GetChild(0).gameObject.GetComponent<AttackColliderLogic>().Init(OnAttack);
 

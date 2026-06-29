@@ -287,7 +287,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8116252042488749b12e89bc2bca22d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Objects.Actors.ActorController
+  Speed: 7
+  JumpForce: 14
   LastAttackTime: 0
+  AttackInterval: 1
+  MaxHp: 100
+  DealingDamage: 10
 --- !u!114 &5302253497461909339
 MonoBehaviour:
   m_ObjectHideFlags: 0

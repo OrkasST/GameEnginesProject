@@ -73,7 +73,8 @@ namespace Assets.Scripts.Business.Services
                         Enemies[obj.GetComponent<EnemyLogic>().ID] = null;
                     });
 
-                    if ((!SaveManager.HasSave && startNewGame.Value) || (SaveManager.HasSave && startNewGame.Value)) continue;
+                    if ((!SaveManager.HasSave && startNewGame.Value) || (SaveManager.HasSave && startNewGame.Value)
+                        || level.name != SaveManager.GetLevel()) continue;
 
                     Debug.Log("SaveManager.GetEnemiesIDs(): " + SaveManager.GetEnemiesIDs().Length);
                     Debug.Log("obj.GetComponent<EnemyLogic>().ID: " + obj.GetComponent<EnemyLogic>().ID);

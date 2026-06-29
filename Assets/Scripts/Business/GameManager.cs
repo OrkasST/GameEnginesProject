@@ -46,7 +46,9 @@ namespace Assets.Scripts.Business
                     switch (_currentSceneName)
                     {
                         case SceneList.Level_01: level = SceneList.Level_02; break;
-                        default: level = SceneList.Level_01; break;
+                        case SceneList.Level_02: level = SceneList.Level_03; break;
+                        case SceneList.Level_03: level = SceneList.Level_04; break;
+                        default: level = SceneList.MainMenu; break;
                     }
                     Debug.Log("NextLevel: " + level);
                     StartCoroutine(SaveAndGoToNextLevel(level));
@@ -97,7 +99,7 @@ namespace Assets.Scripts.Business
                 }, // StartButton Callback
                 (float value) => {
                     _isStartingNew = true;
-                    StartCoroutine(LoadScene(SceneList.Level_01));
+                    StartCoroutine(LoadScene(SceneList.Level_01)); // Startting Level
                 }, // VolumeAdjusting
             });
         }
